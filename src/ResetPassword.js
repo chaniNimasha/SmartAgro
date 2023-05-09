@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Image, Text, TextInput, TouchableOpacity,} from 'react-native';
-const ResetPassword = () => {
-  const [emailAddress, email] = useState('');
+import { useNavigation } from '@react-navigation/native';
 
+const ResetPassword = () => {
+
+  const navigation = useNavigation();
+  const [emailAddress, email] = useState('');
+  
   const handleResetPassword = () => {
     // handle reset password logic
   };
+
+  const Login = () => {
+    navigation.navigate('Login');
+  }
 
   return (
     <View style={styles.container}>
@@ -28,6 +36,10 @@ const ResetPassword = () => {
        
       <TouchableOpacity style={styles.resetButton} onPress={handleResetPassword}>
         <Text style={styles.resetButtonText}>RESET PASSWORD</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.loginButton} onPress={Login}>
+        <Text style={styles.resetButtonText}>LOGIN</Text>
       </TouchableOpacity>
     </View>
   );
@@ -87,6 +99,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 100,
     paddingVertical: 16,
     top: 45,
+
+  },
+
+  loginButton: {
+    
+    borderRadius: 25,
+    paddingHorizontal: 100,
+    paddingVertical: 16,
+    top: 45,
+    
+
 
   },
   resetButtonText: {

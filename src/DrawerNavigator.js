@@ -23,7 +23,8 @@ const Drawer = createDrawerNavigator();
 
 function DrawerNavigator({navigation}) {
     return (
-        <NavigationContainer>
+        <>
+        
 
             <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />}
 
@@ -121,7 +122,8 @@ function DrawerNavigator({navigation}) {
 
 
             </Drawer.Navigator>
-        </NavigationContainer>
+        
+        </>
     )
 }
 const styles = StyleSheet.create({

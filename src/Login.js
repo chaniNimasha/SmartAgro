@@ -16,9 +16,10 @@ export default function Login() {
   const navigation = useNavigation();
   const login = () => {
     // navigation.navigate('Screen_A');
-     navigation.navigate('Drawer');
+    navigation.navigate('Drawer');
   }
   const handleForgotPassword = () => {
+    navigation.navigate('ResetPassword');
 
   };
 
@@ -31,7 +32,7 @@ export default function Login() {
         style={{ width: 260, height: 90, top: -15 }}
       />
 
-      <Text style={styles.Title}>Fazenda Dashboard</Text>
+      <Text style={styles.Title}>SmartAgro Dashboard</Text>
       <Text style={styles.heading}>SIGN IN</Text>
       <Text style={styles.username}>USERNAME</Text>
       <TextInput
