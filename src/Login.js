@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { useState} from 'react';
 import { StyleSheet, View, Image, Text, Alert, TextInput, TouchableOpacity } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { useNavigation } from '@react-navigation/native';
@@ -22,7 +22,7 @@ export default function Login() {
     formdata.append("username", username);
     formdata.append("password", password);
 
-    fetch("https://6e2d-112-134-159-90.ngrok-free.app/auth/login", {
+    fetch("https://9bd1-112-134-155-68.ngrok-free.app/auth/login", {
       method: "POST",
       body: formdata,
       redirect: "follow"
@@ -36,7 +36,7 @@ export default function Login() {
 
         console.log(Response.token)
         console.log(Response.status)
-        
+
       })
 
       .catch(error =>

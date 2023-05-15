@@ -52,7 +52,7 @@ export default function Sensors({ navigation }) {
 
     useEffect(() => {
 
-        fetch("https://6e2d-112-134-159-90.ngrok-free.app/sensors", {
+        fetch("https://9bd1-112-134-155-68.ngrok-free.app/sensors", {
             method: "GET"
         }).then(Response => Response.json())
             .then(Response => {
