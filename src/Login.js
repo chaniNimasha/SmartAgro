@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import { StyleSheet, View, Image, Text, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, Text, Alert, TextInput, TouchableOpacity } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { useNavigation } from '@react-navigation/native';
 
@@ -9,15 +9,44 @@ export default function Login() {
   const [keepSignedIn, setKeepSignedIn] = useState(false);
 
   const onPressHandler = () => {
-    // navigation.navigate('Screen_A');
     navigation.goBack();
   }
-  // const navigation = useNavigation();
+
   const navigation = useNavigation();
+
+  
+
   const login = () => {
-    // navigation.navigate('Screen_A');
-    navigation.navigate('Drawer');
+
+    var formdata = new FormData();
+    formdata.append("username", username);
+    formdata.append("password", password);
+
+    fetch("https://6e2d-112-134-159-90.ngrok-free.app/auth/login", {
+      method: "POST",
+      body: formdata,
+      redirect: "follow"
+    })
+      .then(response => response.json())
+      .then(Response => {
+        console.log(Response.token)
+        navigation.navigate('Drawer');
+        setUsername("");
+        setPassword("");
+
+        console.log(Response.token)
+        console.log(Response.status)
+        
+      })
+
+      .catch(error =>
+        alert("Invalid Username or Password!!!")
+      );
+
+
+    // navigation.navigate('Drawer');
   }
+
   const handleForgotPassword = () => {
     navigation.navigate('ResetPassword');
 
@@ -25,7 +54,6 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-
       <Image source={require('../assets/tea.png')} style={styles.backgroundImage} />
       <Image
         source={require('../assets/logo.png')}
@@ -42,6 +70,7 @@ export default function Login() {
         placeholder="Enter name"
         placeholderTextColor="black"
       />
+
       <Text style={styles.username}>PASSWOARD</Text>
       <TextInput
         style={styles.input}
@@ -49,8 +78,8 @@ export default function Login() {
         value={password}
         placeholder="Enter Password"
         placeholderTextColor="black"
-
       />
+
       <TouchableOpacity onPress={handleForgotPassword}>
         <Text style={styles.forgotPassword}>Forgot Password?</Text>
       </TouchableOpacity>
@@ -58,13 +87,11 @@ export default function Login() {
         <CheckBox
           value={keepSignedIn}
           onValueChange={setKeepSignedIn}
-          style={styles.checkbox}
-        />
+          style={styles.checkbox} />
         <Text style={styles.keepSignedIn}>Keep me signed in</Text>
       </View>
-      <TouchableOpacity style={styles.loginButton}
-        onPress={login}
-      >
+
+      <TouchableOpacity style={styles.loginButton} onPress={login}>
         <Text style={styles.loginButtonText}>SIGN IN</Text>
       </TouchableOpacity>
 
@@ -128,6 +155,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     paddingHorizontal: 16,
     marginBottom: 16,
+    
+    fontSize:18
 
 
   },

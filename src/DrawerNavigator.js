@@ -4,8 +4,6 @@ import {
     Image,
 } from 'react-native';
 
-
-import { NavigationContainer } from '@react-navigation/native';
 import '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler'
@@ -23,28 +21,22 @@ const Drawer = createDrawerNavigator();
 
 function DrawerNavigator({navigation}) {
     return (
-        <>
-        
-
             <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />}
-
                 screenOptions={{
                     headerRight: () => <Header></Header>,
                     headerStyle: {
                         backgroundColor: '#000928',
-
                     },
+
                     drawerStyle: {
                         backgroundColor: 'transparent',
                     },
+
                     headerTintColor: 'rgba(164, 164, 164, 0.7)',
                     headerTitle: '',
                     drawerInactiveTintColor: "white",
 
-                }}
-
-
-            >
+                }}>
 
                 <Drawer.Screen
                     name="Sensors"
@@ -55,7 +47,6 @@ function DrawerNavigator({navigation}) {
                                 source={require('../assets/sensors.png')}
                                 style={[{ height: 23, width: 23 }]}
                             />)
-
                     }}
                 />
 
@@ -119,11 +110,7 @@ function DrawerNavigator({navigation}) {
                     }}
                 />
 
-
-
-            </Drawer.Navigator>
-        
-        </>
+            </Drawer.Navigator>  
     )
 }
 const styles = StyleSheet.create({
