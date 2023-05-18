@@ -5,9 +5,12 @@ import {
     Text,
     SafeAreaView,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    Linking
 } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
+
+
 
 export default function Complaints({ navigation }) {
     const [chosenOption, setChosenOption] = useState('Software');
@@ -22,11 +25,9 @@ export default function Complaints({ navigation }) {
         // navigation.navigate('Screen_A');
         navigation.goBack();
     }
-    const submit = () => {
-        
     
-      };
-
+        
+        
     return (
         <SafeAreaView style={styles.body}>
             <View>
@@ -45,7 +46,7 @@ export default function Complaints({ navigation }) {
                         placeholder="Enter the problem"
                         placeholderTextColor="white" />
                 </View>
-                <View style={{ flexDirection: 'row', marginBottom:20 }}>
+                <View style={{ flexDirection: 'row', marginBottom: 20 }}>
                     <Text style={styles.problem}>Type      </Text>
 
                     <RadioForm
@@ -59,7 +60,7 @@ export default function Complaints({ navigation }) {
                             color: 'white',
                             marginBottom: 30
                         }}
-                        
+
                         onPress={(value) => {
                             setChosenOption(value);
                         }}
@@ -76,10 +77,10 @@ export default function Complaints({ navigation }) {
                         placeholder="Enter the Message"
                         placeholderTextColor="white" />
                 </View>
-                <View style={{alignItems:'center'}}>
-                <TouchableOpacity style={styles.submit} onPress={submit}>
-                    <Text style={styles.submitButtonText}>SUBMIT</Text>
-                </TouchableOpacity>
+                <View style={{ alignItems: 'center' }}>
+                    <TouchableOpacity style={styles.submit} onPress={submit}>
+                        <Text style={styles.submitButtonText}>SUBMIT</Text>
+                    </TouchableOpacity>
                 </View>
 
 
@@ -147,16 +148,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#1161ee',
         borderRadius: 25,
         paddingHorizontal: 80,
-        paddingVertical:20,
-        width:"60%",
-        alignContent:'center',
-        alignItems:'center',
-        top:100
-        
-      },
-      submitButtonText: {
+        paddingVertical: 20,
+        width: "60%",
+        alignContent: 'center',
+        alignItems: 'center',
+        top: 100
+
+    },
+    submitButtonText: {
         color: '#fff',
         fontSize: 16,
-        alignItems:'center'
-      },
+        alignItems: 'center'
+    },
 })

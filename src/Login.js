@@ -1,7 +1,8 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Image, Text, Alert, TextInput, TouchableOpacity } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -14,35 +15,47 @@ export default function Login() {
 
   const navigation = useNavigation();
 
-  
+
 
   const login = () => {
 
-    var formdata = new FormData();
-    formdata.append("username", username);
-    formdata.append("password", password);
+    var data = {
+      username: username,
+      password: password
+    };
 
-    fetch("https://9bd1-112-134-155-68.ngrok-free.app/auth/login", {
-      method: "POST",
-      body: formdata,
-      redirect: "follow"
-    })
+    var requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+      redirect: 'follow'
+    };
+
+    fetch("https://6896-112-134-159-114.ngrok-free.app/auth/login", requestOptions
+    )
       .then(response => response.json())
-      .then(Response => {
-        console.log(Response.token)
-        navigation.navigate('Drawer');
-        setUsername("");
-        setPassword("");
-
-        console.log(Response.token)
-        console.log(Response.status)
-
+      .then(data => {
+        if (data.status == "success") {
+          const token = data.token; 
+          console.log(token)
+          AsyncStorage.setItem('token', token);
+         
+          // Password and username are valid
+          navigation.navigate('Drawer', { token: token });
+          setUsername("");
+          setPassword("");
+        } else {
+          // Invalid password or username
+          alert("Invalid Username or Password!!!");
+        }
       })
-
-      .catch(error =>
-        alert("Invalid Username or Password!!!")
-      );
-
+      .catch(error => {
+        // Handle any network or fetch errors
+        console.error(error);
+        alert("An error occurred. Please try again.");
+      });
 
     // navigation.navigate('Drawer');
   }
@@ -155,8 +168,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     paddingHorizontal: 16,
     marginBottom: 16,
-    
-    fontSize:18
+
+    fontSize: 18
 
 
   },

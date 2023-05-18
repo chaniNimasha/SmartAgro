@@ -14,7 +14,7 @@ import Sensors from './Sensors';
 import History from './History';
 import Analysis from './Analysis';
 import Yield from './Yield';
-import Controllers from './Controllers';
+//import Controllers from './Controllers';
 import CustomDrawer from './CustomDrawer';
 import Header from './Header';
 import FeedBacks from './FeedBacks';
@@ -106,7 +106,7 @@ function DrawerNavigator({ navigation }) {
                 }}
             />
 
-            <Drawer.Screen
+            {/* <Drawer.Screen
                 name="Controllers"
                 component={Controllers}
                 options={{
@@ -116,7 +116,7 @@ function DrawerNavigator({ navigation }) {
                             style={[{ height: 23, width: 23 }]}
                         />)
                 }}
-            />
+            /> */}
             
 
             <Drawer.Screen

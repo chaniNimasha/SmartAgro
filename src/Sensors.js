@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useId } from 'react';
 import {
     Text,
     SafeAreaView,
@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import SensorItems from './SensorItems';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const SoiTemperature = require('../assets/soilTemp.png')
 const SoilMoisture = require('../assets/soilMoist.png')
@@ -19,10 +21,20 @@ const soilPhosphorus = require('../assets/p.png')
 const soilPotassium = require('../assets/k.png')
 const rainfall = require('../assets/rain.png')
 
+const getToken = async () => {
+    try {
+        const token = await AsyncStorage.getItem('token');
+        return token;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
 let data = [
-    { pic: SoiTemperature, Sensor: "Soil Temperature", value: "", average: "70%", val: '' , name: "sTemp"},
+    { pic: SoiTemperature, Sensor: "Soil Temperature", value: "", average: "70%", val: '', name: "sTemp" },
     { pic: SoilMoisture, Sensor: "Soil Moisture", value: "", average: "70%", val: '', name: "sMois" },
-    { pic: ambientTemperature, Sensor: "Ambient Temperature", value: "", average: "70%", val: '', name: "temp"},
+    { pic: ambientTemperature, Sensor: "Ambient Temperature", value: "", average: "70%", val: '', name: "temp" },
     { pic: airHumidity, Sensor: "Relative Air Humidity", value: '', average: "70%", val: '', name: "hum" },
     { pic: soilPhValue, Sensor: "Soil PH Value", value: "", average: "70%", val: '', name: "ph" },
     { pic: soilConductivity, Sensor: "Soil Electrical Conductivity", value: "", average: "70%", val: '', name: "sec" },
@@ -30,7 +42,7 @@ let data = [
     { pic: soilNitrogen, Sensor: "Soil Nitrogen", value: "", average: "70%", val: '', name: "n" },
     { pic: soilPhosphorus, Sensor: "Soil Phosphorus", value: "", average: "70%", val: '', name: "p" },
     { pic: soilPotassium, Sensor: "Soil Potassium", value: "", average: "70%", val: '', name: "k" },
-    { pic: rainfall, Sensor: "Rainfall", value: "", average: "70%", val: '', name:"r" },
+    { pic: rainfall, Sensor: "Rainfall", value: "", average: "70%", val: '', name: "r" },
 ]
 
 export default function Sensors({ navigation }) {
@@ -51,92 +63,107 @@ export default function Sensors({ navigation }) {
 
 
     useEffect(() => {
+        const fetchData = async () => {
+            const token = await getToken();
 
-        fetch("https://9bd1-112-134-155-68.ngrok-free.app/sensors", {
-            method: "GET"
-        }).then(Response => Response.json())
-            .then(Response => {
-                // data = Response.data
+            if (token) {
+                const requestOptions = {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                };
 
-                data.forEach((element, idx) => {
 
-                    if (element.name == "sTemp") {
-                        
-                        data[idx].value = Response.data[2].sTemp
-                        data[idx].val = Response.data[2].sTemp
-                       
-                    }
-                    else if (element.name == "sMois") {
-                       
-                        data[idx].value = Response.data[2].sMois
-                        data[idx].val = Response.data[2].sMois
-                       
-                    }
+                fetch("https://6896-112-134-159-114.ngrok-free.app/sensors",
+                    requestOptions
+                ).then(Response => Response.json())
+                    .then(Response => {
+                        // data = Response.data
+                        console.log(Response)
+                        data.forEach((element, idx) => {
 
-                    else if (element.name == "temp") {
-                       
-                        data[idx].value = Response.data[2].temp
-                        data[idx].val = Response.data[2].temp
-                        
-                    }
-                    
-                    else if (element.name == "hum") {
-                       
-                        data[idx].value = Response.data[2].hum
-                        data[idx].val = Response.data[2].hum
-                    }
-                    
-                    else if (element.name == "ph") {
-                        
-                        data[idx].value = Response.data[2].ph
-                        data[idx].val = Response.data[2].ph
-                        
-                    }
-                    
-                    else if (element.name == "sec") {
-                        
-                        data[idx].value = Response.data[2].sec
-                        data[idx].val = Response.data[2].sec
-                       
-                    }
-                    
-                    else if (element.name == "n") {
-                       
-                        data[idx].value = Response.data[2].n
-                        data[idx].val = Response.data[2].n
-                     
-                    }
-                    
-                    else if (element.name == "p") {
-                       
-                        data[idx].value = Response.data[2].p
-                        data[idx].val = Response.data[2].p
-               
-                    }
-                    
-                    else if (element.name == "k") {
-                        
-                        data[idx].value = Response.data[2].k
-                        data[idx].val = Response.data[2].k
-                    }
-                    
-                    else if (element.name == "r") {
-                        
-                        data[idx].value = Response.data[2].r
-                        data[idx].val = Response.data[2].r
-                       
-                    }
+                            if (element.name == "sTemp") {
 
-                  
-                })
+                                data[idx].value = Response.data.sTemp
+                                data[idx].val = Response.data.sTemp
 
-                
+                            }
+                            else if (element.name == "sMois") {
 
-                 console.log(data[0].hum)
-            })
+                                data[idx].value = Response.data.sMois
+                                data[idx].val = Response.data.sMois
 
-        console.log("starting Sensors view")
+                            }
+
+                            else if (element.name == "temp") {
+
+                                data[idx].value = Response.data.temp
+                                data[idx].val = Response.data.temp
+
+                            }
+
+                            else if (element.name == "hum") {
+
+                                data[idx].value = Response.data.hum
+                                data[idx].val = Response.data.hum
+                            }
+
+                            else if (element.name == "ph") {
+
+                                data[idx].value = Response.data.ph
+                                data[idx].val = Response.data.ph
+
+                            }
+
+                            else if (element.name == "sec") {
+
+                                data[idx].value = Response.data.sec
+                                data[idx].val = Response.data.sec
+
+                            }
+
+                            else if (element.name == "n") {
+
+                                data[idx].value = Response.data.n
+                                data[idx].val = Response.data.n
+
+                            }
+
+                            else if (element.name == "p") {
+
+                                data[idx].value = Response.data.p
+                                data[idx].val = Response.data.p
+
+                            }
+
+                            else if (element.name == "k") {
+
+                                data[idx].value = Response.data.k
+                                data[idx].val = Response.data.k
+                            }
+
+                            else if (element.name == "r") {
+
+                                data[idx].value = Response.data.r
+                                data[idx].val = Response.data.r
+
+                            }
+
+
+                        })
+
+
+
+                        console.log(data[0].hum)
+                    })
+
+                console.log("starting Sensors view")
+            }
+        }
+        fetchData();
     })
+
 
 
     return (
@@ -149,7 +176,7 @@ export default function Sensors({ navigation }) {
                 data={data}
                 keyExtractor={(item, index) => index.toString()}
 
-                
+
                 renderItem={({ item }) => (<SensorItems product={item} />)}
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
