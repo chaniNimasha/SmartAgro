@@ -1,4 +1,4 @@
-import React, { useEffect, useId } from 'react';
+import React, { useEffect } from 'react';
 import {
     Text,
     SafeAreaView,
@@ -8,7 +8,6 @@ import {
 import { FlatList } from 'react-native-gesture-handler';
 import SensorItems from './SensorItems';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 const SoiTemperature = require('../assets/soilTemp.png')
 const SoilMoisture = require('../assets/soilMoist.png')
@@ -32,17 +31,16 @@ const getToken = async () => {
 };
 
 let data = [
-    { pic: SoiTemperature, Sensor: "Soil Temperature", value: "", average: "70%", val: '', name: "sTemp" },
-    { pic: SoilMoisture, Sensor: "Soil Moisture", value: "", average: "70%", val: '', name: "sMois" },
-    { pic: ambientTemperature, Sensor: "Ambient Temperature", value: "", average: "70%", val: '', name: "temp" },
-    { pic: airHumidity, Sensor: "Relative Air Humidity", value: '', average: "70%", val: '', name: "hum" },
-    { pic: soilPhValue, Sensor: "Soil PH Value", value: "", average: "70%", val: '', name: "ph" },
-    { pic: soilConductivity, Sensor: "Soil Electrical Conductivity", value: "", average: "70%", val: '', name: "sec" },
-
-    { pic: soilNitrogen, Sensor: "Soil Nitrogen", value: "", average: "70%", val: '', name: "n" },
-    { pic: soilPhosphorus, Sensor: "Soil Phosphorus", value: "", average: "70%", val: '', name: "p" },
-    { pic: soilPotassium, Sensor: "Soil Potassium", value: "", average: "70%", val: '', name: "k" },
-    { pic: rainfall, Sensor: "Rainfall", value: "", average: "70%", val: '', name: "r" },
+    { pic: SoiTemperature, Sensor: "Soil Temperature", value: "", average: "70%", val: '', name: "sTemp", unit: "°C" },
+    { pic: SoilMoisture, Sensor: "Soil Moisture", value: "", average: "70%", val: '', name: "sMois", unit: "%" },
+    { pic: ambientTemperature, Sensor: "Ambient Temperature", value: "", average: "70%", val: '', name: "temp", unit: "°C" },
+    { pic: airHumidity, Sensor: "Relative Air Humidity", value: '', average: "70%", val: '', name: "hum", unit: "%" },
+    { pic: soilPhValue, Sensor: "Soil PH Value", value: "", average: "70%", val: '', name: "ph", unit: " " },
+    { pic: soilConductivity, Sensor: "Soil Electrical Conductivity", value: "", average: "70%", val: '', name: "sec", unit: "mS/cm" },
+    { pic: soilNitrogen, Sensor: "Soil Nitrogen", value: "", average: "70%", val: '', name: "n", unit: "ppm" },
+    { pic: soilPhosphorus, Sensor: "Soil Phosphorus", value: "", average: "70%", val: '', name: "p", unit: "ppm" },
+    { pic: soilPotassium, Sensor: "Soil Potassium", value: "", average: "70%", val: '', name: "k", unit: "ppm" },
+    { pic: rainfall, Sensor: "Rainfall", value: "", average: "70%", val: '', name: "r", unit: "mm" },
 ]
 
 export default function Sensors({ navigation }) {
@@ -74,12 +72,10 @@ export default function Sensors({ navigation }) {
                     }
                 };
 
-
-                fetch("https://6896-112-134-159-114.ngrok-free.app/sensors",
+                fetch("https://8e8b-112-134-155-12.ngrok-free.app/sensors",
                     requestOptions
                 ).then(Response => Response.json())
                     .then(Response => {
-                        // data = Response.data
                         console.log(Response)
                         data.forEach((element, idx) => {
 
@@ -149,22 +145,15 @@ export default function Sensors({ navigation }) {
                                 data[idx].val = Response.data.r
 
                             }
-
-
                         })
 
-
-
-                        console.log(data[0].hum)
+                        
+                    
                     })
-
-                console.log("starting Sensors view")
             }
         }
         fetchData();
     })
-
-
 
     return (
         <SafeAreaView style={styles.body}>
@@ -175,41 +164,38 @@ export default function Sensors({ navigation }) {
                 numColumns={2}
                 data={data}
                 keyExtractor={(item, index) => index.toString()}
-
-
                 renderItem={({ item }) => (<SensorItems product={item} />)}
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }>
-
             </FlatList>
         </SafeAreaView>
     )
 }
 const styles = StyleSheet.create({
+
     body: {
         flex: 1,
         backgroundColor: '#000928'
-
     },
+
     chart: {
         position: "absolute",
         marginTop: 180,
         marginLeft: 18
-
-
     },
+
     text: {
-        fontSize: 28,
+        fontSize: 25,
         fontWeight: 'bold',
         margin: 10,
         color: 'white',
         top: 15,
+        marginBottom:20,
     },
+
     square: {
-
         backgroundColor: "#001837",
-
     },
 
     text1: {
@@ -218,6 +204,7 @@ const styles = StyleSheet.create({
         marginTop: 110,
         marginLeft: 100
     },
+
     text2: {
         position: "absolute",
         color: 'rgba(164, 164, 164, 0.7)',

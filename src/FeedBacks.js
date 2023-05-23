@@ -3,13 +3,13 @@ import {
     StyleSheet,
     View,
     Text,
-    Pressable,
     SafeAreaView,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native';
-
 import Mailer from 'react-native-mail';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function FeedBacks({ navigation }) {
 
@@ -19,20 +19,68 @@ export default function FeedBacks({ navigation }) {
         // navigation.navigate('Screen_A');
         navigation.goBack();
     }
-    const submit = () => {
-        Mailer.mail({
-            subject: 'Email Subject',
-            recipients: ['chaninimasha123@gmail.com', 'dushmanthi.uliyanage@gmail.com'],
-            body: '<b>Email body</b>',
-            isHTML: true
-        }, (error, event) => {
+
+    const getToken = async () => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+            return token;
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    };
+    const sendFeedback = async () => {
+        const token = await getToken();
+
+        const data = {
+            problem: problem,
+            message: message
+        };
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+        };
+
+        fetch('https://8e8b-112-134-155-12.ngrok-free.app/feedback', requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                console.log('Complaint submitted successfully', result);
+                Alert.alert('Success', 'Complaint submitted successfully.');
+                setProblem('');
+                setMessage('');
+            })
+            .catch(error => {
+                console.error('Error submitting complaint', error);
+                Alert.alert('Error', 'Failed to submit complaint. Please try again.');
+            });
+        setTimeout(() => {
+            sendEmail();
+        }, 2000);
+    };
+
+    const sendEmail = () => {
+        const email = {
+            subject: problem,  
+            recipients: ['chaninimasha123@gmail.com'],  // Replace with your recipient email address
+
+            body: message,  
+            isHTML: true,  
+        };
+
+        Mailer.mail(email, (error, event) => {
             if (error) {
-                console.log('Error: ', error);
+                Alert.alert('Error', 'Could not send email. Please check your email configuration.');
             } else {
-                console.log('Email sent successfully');
+                Alert.alert('Success', 'Email sent successfully.');
             }
         });
-
+        setMessage("");
+        setProblem("");
     };
 
     return (
@@ -64,12 +112,10 @@ export default function FeedBacks({ navigation }) {
                         placeholderTextColor="white" />
                 </View>
                 <View style={{ alignItems: 'center' }}>
-                    <TouchableOpacity style={styles.submit} onPress={submit}>
+                    <TouchableOpacity style={styles.submit} onPress={sendFeedback}>
                         <Text style={styles.submitButtonText}>SUBMIT</Text>
                     </TouchableOpacity>
                 </View>
-
-
             </View>
         </SafeAreaView>
     )
@@ -92,7 +138,7 @@ const styles = StyleSheet.create({
         fontSize: 28,
         fontWeight: 'bold',
         margin: 10,
-        color: 'blue',
+        color: '#1161ee',
         top: 15,
         textAlign: 'center'
     },
@@ -111,8 +157,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         marginBottom: 16,
         top: 60,
-        fontSize: 18
-
+        fontSize: 18,
+        color:'white'
     },
 
     submit: {

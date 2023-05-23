@@ -4,13 +4,13 @@ import Pie from 'react-native-pie';
 
 class SensorItems extends React.Component {
     render() {
-        const { pic, Sensor, value, average, val } = this.props.product
+        const { pic, Sensor, value, average, val, unit } = this.props.product
         return (
             <View style={styles.body}>
 
                 <Image style={styles.image} source={pic}></Image>
                 <Text style={styles.sensorname}>{Sensor}</Text>
-                <Text style={styles.value}>{value} %</Text>
+                <Text style={styles.value}>{value} {unit}</Text>
                 <Text style={styles.averageval}>Σ Average: {average}</Text>
                 <View style={{ alignItems: 'center', marginTop: 90}}>
                     <Pie style={styles.pie}
@@ -27,7 +27,7 @@ class SensorItems extends React.Component {
 
                     />
                     <View style={styles.gauge} >
-                        <Text style={styles.gaugeText}> {value}% </Text>
+                        <Text style={styles.gaugeText}> {value} {unit} </Text>
                     </View>
                 </View>
             </View>

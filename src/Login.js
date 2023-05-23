@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Image, Text, Alert, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, Text, TextInput, TouchableOpacity } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,11 +14,7 @@ export default function Login() {
   }
 
   const navigation = useNavigation();
-
-
-
   const login = () => {
-
     var data = {
       username: username,
       password: password
@@ -33,7 +29,7 @@ export default function Login() {
       redirect: 'follow'
     };
 
-    fetch("https://6896-112-134-159-114.ngrok-free.app/auth/login", requestOptions
+    fetch("https://8e8b-112-134-155-12.ngrok-free.app/auth/login", requestOptions
     )
       .then(response => response.json())
       .then(data => {
@@ -41,28 +37,21 @@ export default function Login() {
           const token = data.token; 
           console.log(token)
           AsyncStorage.setItem('token', token);
-         
-          // Password and username are valid
           navigation.navigate('Drawer', { token: token });
           setUsername("");
           setPassword("");
         } else {
-          // Invalid password or username
           alert("Invalid Username or Password!!!");
         }
       })
       .catch(error => {
-        // Handle any network or fetch errors
         console.error(error);
         alert("An error occurred. Please try again.");
       });
-
-    // navigation.navigate('Drawer');
   }
 
   const handleForgotPassword = () => {
     navigation.navigate('ResetPassword');
-
   };
 
   return (
@@ -118,6 +107,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
   username: {
     fontSize: 18,
     color: "rgba(255, 255, 255, 0.5)",
@@ -125,29 +115,25 @@ const styles = StyleSheet.create({
     bottom: -24,
     marginBottom: 32,
     fontWeight: 'bold',
-
-
-
   },
+
   Title: {
     fontSize: 24,
     color: "white",
     textAlign: 'center',
     top: -10,
     marginBottom: 32,
-
   },
+
   backgroundImage: {
     flex: 5,
     resizeMode: 'cover',
     top: -80,
     right: -180,
-    // bottom:100,
     position: 'absolute',
     width: "200%",
     flexDirection: 'column'
   },
-
 
   heading: {
     fontSize: 29,
@@ -159,6 +145,7 @@ const styles = StyleSheet.create({
     bottom: -25,
     marginBottom: 32,
   },
+
   input: {
     width: '80%',
     height: 60,
@@ -168,41 +155,45 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     paddingHorizontal: 16,
     marginBottom: 16,
-
-    fontSize: 18
-
-
+    fontSize: 18,
   },
+
   forgotPassword: {
     color: "rgba(255, 255, 255, 0.5)",
     marginBottom: 16,
     fontSize: 18,
     right: 90,
   },
+
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
   },
+
   checkbox: {
     marginRight: 170,
   },
+
   keepSignedIn: {
     fontSize: 17,
     right: 167,
     fontWeight: "bold",
     color: "rgba(255, 255, 255, 0.5)"
   },
+
   loginButton: {
     backgroundColor: '#1161ee',
     borderRadius: 25,
     paddingHorizontal: 100,
     paddingVertical: 16,
   },
+
   loginButtonText: {
     color: '#fff',
     fontSize: 16,
   },
+  
 });
 
 

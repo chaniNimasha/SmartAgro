@@ -1,28 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     StyleSheet,
     Image,
-    View,
 } from 'react-native';
-
 import '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler'
-
 import Sensors from './Sensors';
-
 import History from './History';
 import Analysis from './Analysis';
 import Yield from './Yield';
-//import Controllers from './Controllers';
 import CustomDrawer from './CustomDrawer';
 import Header from './Header';
 import FeedBacks from './FeedBacks';
 import Complaints from './Complaints';
 import mapbox from './mapbox';
-
-
-
 
 const Drawer = createDrawerNavigator();
 
@@ -42,7 +34,6 @@ function DrawerNavigator({ navigation }) {
                 headerTintColor: 'rgba(164, 164, 164, 0.7)',
                 headerTitle: '',
                 drawerInactiveTintColor: "white",
-
             }}>
 
             <Drawer.Screen
@@ -106,25 +97,12 @@ function DrawerNavigator({ navigation }) {
                 }}
             />
 
-            {/* <Drawer.Screen
-                name="Controllers"
-                component={Controllers}
-                options={{
-                    drawerIcon: ({ focused, size }) => (
-                        <Image
-                            source={require('../assets/controllers.png')}
-                            style={[{ height: 23, width: 23 }]}
-                        />)
-                }}
-            /> */}
-            
-
             <Drawer.Screen
                 name="FeedBacks"
                 component={FeedBacks}
                 options={{
                     drawerIcon: ({ focused, size }) => (
-                        
+
                         <Image
                             source={require('../assets/feedback.png')}
                             style={[{ height: 23, width: 23 }]}
@@ -137,7 +115,7 @@ function DrawerNavigator({ navigation }) {
                 name="Complaints"
                 component={Complaints}
                 options={{
-                    
+
                     drawerIcon: ({ focused, size }) => (
                         <Image
                             source={require('../assets/bad-review.png')}
@@ -145,7 +123,7 @@ function DrawerNavigator({ navigation }) {
                         />)
                 }}
             />
-         
+
 
         </Drawer.Navigator>
     )

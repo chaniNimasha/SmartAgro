@@ -3,21 +3,21 @@ import {
     StyleSheet,
     View,
     Text,
-    Pressable,
 } from 'react-native';
 
 export default function Yield({ navigation }) {
 
     const onPressHandler = () => {
-        // navigation.navigate('Screen_A');
-        navigation.goBack();
+        // navigation.navigate('Screen_B');
+        navigation.toggleDrawer();
     }
 
     return (
         <View style={styles.body}>
             <Text style={styles.text}>
                 Yield
-       </Text>
+        </Text>
+            
         </View>
     )
 }
@@ -34,3 +34,4 @@ const styles = StyleSheet.create({
         margin: 10,
     }
 })
+
